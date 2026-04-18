@@ -1,0 +1,48 @@
+# Codex CLI プロジェクト設定
+# このファイルはプロジェクトが trusted としてマークされた場合のみ読み込まれます。
+# ユーザーレベル: ~/.codex/config.toml で trust_level = "trusted" を設定してください。
+
+# --- モデル設定 ---
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+web_search = "live"
+
+# --- 承認ポリシー ---
+# on-request: モデルが必要と判断した場合にユーザーに確認を求める（推奨デフォルト）
+approval_policy = "on-request"
+
+# --- サンドボックス設定 ---
+# workspace-write: ワークスペース内の読み書きを許可、外部は読み取り専用
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+# ネットワークアクセスはデフォルトで無効（セキュリティ重視）
+network_access = false
+
+# --- AGENTS.md 設定 ---
+# 最大読み込みサイズ（バイト）
+project_doc_max_bytes = 65536
+
+# --- シェル環境ポリシー ---
+[shell_environment_policy]
+inherit = "core"
+# 秘密情報を含む環境変数はデフォルトで除外される（*KEY*, *SECRET*, *TOKEN*）
+ignore_default_excludes = false
+
+# --- 機能フラグ ---
+[features]
+memories = true
+shell_tool = true
+undo = true
+fast_mode = true
+
+# --- プロファイル ---
+# codex --profile review で利用可能
+[profiles.review]
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+
+# codex --profile fast で利用可能
+[profiles.fast]
+model_reasoning_effort = "low"
+sandbox_mode = "workspace-write"

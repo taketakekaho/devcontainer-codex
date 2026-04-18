@@ -1,0 +1,111 @@
+# Codex CLI 実行ポリシールール（Starlark 形式）
+# 安全な読み取り専用コマンドを事前承認し、危険なコマンドを禁止する。
+# 最も制限的な判定が適用される。
+
+# --- 読み取り専用コマンド（自動承認） ---
+
+prefix_rule(
+    pattern = ["git", "status"],
+    decision = "allow",
+    justification = "読み取り専用: Git ステータス確認",
+)
+
+prefix_rule(
+    pattern = ["git", "log"],
+    decision = "allow",
+    justification = "読み取り専用: Git ログ確認",
+)
+
+prefix_rule(
+    pattern = ["git", "diff"],
+    decision = "allow",
+    justification = "読み取り専用: Git 差分確認",
+)
+
+prefix_rule(
+    pattern = ["git", "branch"],
+    decision = "allow",
+    justification = "読み取り専用: Git ブランチ一覧",
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "view"],
+    decision = "allow",
+    justification = "読み取り専用: GitHub PR 閲覧",
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", "view"],
+    decision = "allow",
+    justification = "読み取り専用: GitHub Issue 閲覧",
+)
+
+# --- ビルド・テストコマンド（自動承認） ---
+
+prefix_rule(
+    pattern = ["pnpm", "run", "test"],
+    decision = "allow",
+    justification = "テスト実行",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "run", "lint"],
+    decision = "allow",
+    justification = "リント実行",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "run", "build"],
+    decision = "allow",
+    justification = "ビルド実行",
+)
+
+prefix_rule(
+    pattern = ["pytest"],
+    decision = "allow",
+    justification = "Python テスト実行",
+)
+
+prefix_rule(
+    pattern = ["ruff", "check"],
+    decision = "allow",
+    justification = "Python リント実行",
+)
+
+prefix_rule(
+    pattern = ["cargo", "test"],
+    decision = "allow",
+    justification = "Rust テスト実行",
+)
+
+prefix_rule(
+    pattern = ["cargo", "clippy"],
+    decision = "allow",
+    justification = "Rust リント実行",
+)
+
+prefix_rule(
+    pattern = ["cargo", "build"],
+    decision = "allow",
+    justification = "Rust ビルド実行",
+)
+
+# --- 危険なコマンド（禁止） ---
+
+prefix_rule(
+    pattern = ["rm", "-rf", "/"],
+    decision = "forbidden",
+    justification = "ルートディレクトリの再帰的削除は禁止",
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Force push は禁止",
+)
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Hard reset は禁止",
+)

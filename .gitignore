@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+.env.local
+.env.*.local
+__pycache__/
+*.pyc
+.venv/
+target/
+
+# Codex CLI ローカル設定（個人の API キー等）
+AGENTS.local.md
+AGENTS.override.md
